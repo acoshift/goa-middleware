@@ -1,13 +1,11 @@
 package jwtGoogle
 
 import (
-	"acourse/app"
-
-	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/goadesign/goa"
+	"github.com/goadesign/goa/middleware/security/jwt"
 )
 
 // New creates new jwt google middleware
-func New(opts Options) goa.Middleware {
-	return jwt.New(NewJWTGoogleResolver(), validate(opts), app.NewJWTSecurity())
+func New(opts Options, scheme *goa.JWTSecurity) goa.Middleware {
+	return jwt.New(NewJWTGoogleResolver(), validate(opts), scheme)
 }
