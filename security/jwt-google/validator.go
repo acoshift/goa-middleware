@@ -15,12 +15,6 @@ const (
 	uidKey contextKey = iota + 1
 )
 
-func some(arr []string, value string) bool {
-  for _, x := range arr {
-    if
-  }
-}
-
 func validate(opts Options) goa.Middleware {
 	m, _ := goa.NewMiddleware(func(h goa.Handler) goa.Handler {
 		return func(ctx context.Context, rw http.ResponseWriter, r *http.Request) error {
@@ -30,27 +24,27 @@ func validate(opts Options) goa.Middleware {
 			}
 			claims := token.Claims.(jwtgo.MapClaims)
 
-      ok := false
-      for _, issuer := range opts.Issuers {
-        if claims.VerifyIssuer(opts.Issuers, true) {
-          ok = true
-          break
-        }
-      }
-      if !ok {
+			ok := false
+			for _, issuer := range opts.Issuers {
+				if claims.VerifyIssuer(issuer, true) {
+					ok = true
+					break
+				}
+			}
+			if !ok {
 				return jwt.ErrJWTError("wrong issuer")
-      }
+			}
 
-      ok = false
-      for _, aud := range opts.Audiences {
-        if claims.VerifyAudience(aud, true) {
-          ok = true
-          break
-        }
-      }
-      if !ok {
-        return jwt.ErrJWTError("wrong audience")
-      }
+			ok = false
+			for _, aud := range opts.Audiences {
+				if claims.VerifyAudience(aud, true) {
+					ok = true
+					break
+				}
+			}
+			if !ok {
+				return jwt.ErrJWTError("wrong audience")
+			}
 
 			uid := claims["sub"].(string)
 			nctx := context.WithValue(ctx, uidKey, uid)
