@@ -9,12 +9,6 @@ import (
 	"golang.org/x/net/context"
 )
 
-type contextKey int
-
-const (
-	uidKey contextKey = iota + 1
-)
-
 func validate(opts Options) goa.Middleware {
 	m, _ := goa.NewMiddleware(func(h goa.Handler) goa.Handler {
 		return func(ctx context.Context, rw http.ResponseWriter, r *http.Request) error {
